@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>📩 Form Validasi Lanjutan</title>
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Quicksand', sans-serif;
+      background: linear-gradient(to right, #c2e9fb, #a1c4fd);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .form-container, .result-container {
+      background: white;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+      width: 100%;
+      max-width: 420px;
+      text-align: center;
+      display: none;
+    }
+    .form-container.active, .result-container.active {
+      display: block;
+    }
+    input, select {
+      width: 90%;
+      padding: 12px;
+      margin: 10px 0;
+      border: 1.5px solid #ccc;
+      border-radius: 8px;
+      font-size: 16px;
+    }
+    button {
+      padding: 12px 24px;
+      font-size: 16px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+    .message {
+      margin-top: 15px;
+      font-size: 16px;
+      font-weight: bold;
+    }
+    .success { color: #2ecc71; }
+    .error { color: #e74c3c; }
+  </style>
+</head>
+<body>
+  <div class="form-container active" id="formContainer">
+    <h2>📝 Form Validasi</h2>
+    <input type="text" id="name" placeholder="Nama lengkap" />
+    <input type="email" id="email" placeholder="Email kamu" />
+    <input type="tel" id="phone" placeholder="Nomor HP" />
+    <select id="gender">
+      <option value="">Pilih Jenis Kelamin</option>
+      <option value="Perempuan">Perempuan</option>
+      <option value="Laki-laki">Laki-laki</option>
+    </select>
+    <button onclick="validateForm()">Kirim</button>
+    <div class="message" id="message"></div>
+  </div>
+
+  <div class="result-container" id="resultContainer">
+    <h2>✅ Terima kasih!</h2>
+    <p id="resultText"></p>
+    <button onclick="location.reload()">🔄 Isi Lagi</button>
+  </div>
+
+  <script>
+    function validateForm() {
+      const name = document.getElementById("name").value.trim();
+      const email = document.getElementById("email").value.trim();
+      const phone = document.getElementById("phone").value.trim();
+      const gender = document.getElementById("gender").value;
+      const message = document.getElementById("message");
+      const resultText = document.getElementById("resultText");
+
+      message.className = "message";
+
+      if (!name || !email || !phone || !gender) {
+        message.textContent = "❌ Semua kolom wajib diisi!";
+        message.classList.add("error");
+      } else if (!email.includes("@") || !email.includes(".")) {
+        message.textContent = "⚠ Email tidak valid!";
+        message.classList.add("error");
+      } else if (!/^[0-9]{10,13}$/.test(phone)) {
+        message.textContent = "📵 Nomor HP harus 10-13 digit angka!";
+        message.classList.add("error");
+      } else {
+        // valid → tampil hasil
+        message.textContent = "";
+        document.getElementById("formContainer").classList.remove("active");
+        document.getElementById("resultContainer").classList.add("active");
+        resultText.innerHTML = `
+          <strong>Nama:</strong> ${name} <br>
+          <strong>Email:</strong> ${email} <br>
+          <strong>Nomor HP:</strong> ${phone} <br>
+          <strong>Jenis Kelamin:</strong> ${gender}
+        `;
+      }
+    }
+  </script>
+</body>
+</html>
